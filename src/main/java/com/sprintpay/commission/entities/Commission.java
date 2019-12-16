@@ -7,6 +7,7 @@ package com.sprintpay.commission.entities;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -21,11 +22,18 @@ public class Commission implements Serializable {
     @Id
     @GeneratedValue
     private int id;
-    private int value;
+    private double commission;
+    private double minAmount;
+    private double maxAmount;
     
-    @ManyToOne
-    @JoinColumn(name = "group_id")
-    private Groupe group;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "src_group_id")
+    private Groupe sourceGroup;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dest_group_id")
+    private Groupe destinationGroup;
+
     
     @ManyToOne
     @JoinColumn(name = "transaction_id")
@@ -38,9 +46,10 @@ public class Commission implements Serializable {
     public Commission() {
     }
 
-    public Commission(int id, int value) {
-        this.id = id;
-        this.value = value;
+    public Commission(double commission, double minAmount, double maxAmount) {
+        this.commission = commission;
+        this.minAmount = minAmount;
+        this.maxAmount = maxAmount;
     }
 
     public int getId() {
@@ -49,22 +58,6 @@ public class Commission implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
-    }
-
-    public Groupe getGroup() {
-        return group;
-    }
-
-    public void setGroup(Groupe group) {
-        this.group = group;
     }
 
     public Transaction getTransaction() {
@@ -83,9 +76,49 @@ public class Commission implements Serializable {
         this.commissionNature = commissionNature;
     }
 
+    public double getCommission() {
+        return commission;
+    }
+
+    public void setCommission(double commission) {
+        this.commission = commission;
+    }
+
+    public double getMinAmount() {
+        return minAmount;
+    }
+
+    public void setMinAmount(double minAmount) {
+        this.minAmount = minAmount;
+    }
+
+    public double getMaxAmount() {
+        return maxAmount;
+    }
+
+    public void setMaxAmount(double maxAmount) {
+        this.maxAmount = maxAmount;
+    }
+
+    public Groupe getSourceGroup() {
+        return sourceGroup;
+    }
+
+    public void setSourceGroup(Groupe sourceGroup) {
+        this.sourceGroup = sourceGroup;
+    }
+
+    public Groupe getDestinationGroup() {
+        return destinationGroup;
+    }
+
+    public void setDestinationGroup(Groupe destinationGroup) {
+        this.destinationGroup = destinationGroup;
+    }
+
     @Override
     public String toString() {
-        return "Commission{" + "id=" + id + ", value=" + value + ", group=" + group + '}';
+        return "Commission{" + "id=" + id + ", commission=" + commission + ", minAmount=" + minAmount + ", maxAmount=" + maxAmount + ", sourceGroup=" + sourceGroup + ", destinationGroup=" + destinationGroup + ", transaction=" + transaction + ", commissionNature=" + commissionNature + '}';
     }
-    
+
 }

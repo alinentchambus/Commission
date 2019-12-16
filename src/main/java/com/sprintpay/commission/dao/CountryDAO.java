@@ -19,6 +19,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CountryDAO extends JpaRepository<Country, Integer>{
     
-    @Query("select * from Country where Country.group.id = :groupId")
+    @Query("select c from Country c where c.group.id = :groupId")
     List<Country> findByGroupeId(@Param("groupId") int groupId);
 }

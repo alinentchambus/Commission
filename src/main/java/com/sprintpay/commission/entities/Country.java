@@ -7,6 +7,7 @@ package com.sprintpay.commission.entities;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -21,17 +22,19 @@ public class Country implements Serializable {
     @Id
     @GeneratedValue
     private int id;
+    private String code;
     private String name;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private Groupe group;
 
     public Country() {
     }
 
-    public Country(String name) {
+    public Country(String code, String name) {
         this.name = name;
+        this.code = code;
     }
 
     public int getId() {
@@ -50,9 +53,9 @@ public class Country implements Serializable {
         this.name = name;
     }
 
-    public Groupe getGroup() {
-        return group;
-    }
+//    public Groupe getGroup() {
+//        return group;
+//    }
 
     public void setGroup(Groupe group) {
         this.group = group;

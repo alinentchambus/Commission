@@ -5,6 +5,7 @@
  */
 package com.sprintpay.commission.web;
 
+import com.sprintpay.commission.dto.TransactionDTO;
 import com.sprintpay.commission.entities.Transaction;
 import com.sprintpay.commission.service.ICommissionService;
 import java.net.URI;
@@ -30,7 +31,7 @@ public class TransactionCtrl {
 //    }
 //    
     @PostMapping("/Transactions")
-    public ResponseEntity<Void> saveService(@RequestBody Transaction transaction){
+    public ResponseEntity<Void> saveService(@RequestBody TransactionDTO transaction){
     
         Transaction transactionAdded = commissionService.saveOrUpdateTransaction(transaction);
         

@@ -5,6 +5,11 @@
  */
 package com.sprintpay.commission.service;
 
+import com.sprintpay.commission.dto.CommissionDTO;
+import com.sprintpay.commission.dto.CountryDTO;
+import com.sprintpay.commission.dto.TransactionDTO;
+import com.sprintpay.commission.entities.Commission;
+import com.sprintpay.commission.entities.CommissionNature;
 import com.sprintpay.commission.entities.Country;
 import com.sprintpay.commission.entities.Groupe;
 import com.sprintpay.commission.entities.Service;
@@ -20,9 +25,10 @@ public interface ICommissionService {
     Groupe saveOrUpdateGroup(Groupe groupe);
     List<Groupe> findAllGroup();
     void deleteGroup(int groupId);
+    //void commissionConfig
     
     //Country
-    Country saveOrUpdateCountry(Country country);
+    Country saveOrUpdateCountry(CountryDTO country);
     List<Country> findCountryByGroupId(int groupId);
     void deleteCountry(int countryId);
     
@@ -33,7 +39,12 @@ public interface ICommissionService {
     
     //Transactions
     List<Transaction> findByServiceId(int serviceId);
-    Transaction saveOrUpdateTransaction(Transaction transaction);
+    Transaction saveOrUpdateTransaction(TransactionDTO transactionDTO);
     void deleteTransaction(int transaction);
     
+    
+    //CommissionNature
+    List<CommissionNature> getAllCommissionNature();
+    Commission saveOrUpdateCommission(CommissionDTO commissionDTO);
+    double findCommission(int srcCountryId, int destCountryId, int transactionId, int amount);
 }

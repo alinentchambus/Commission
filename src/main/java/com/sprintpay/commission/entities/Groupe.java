@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -24,11 +25,8 @@ public class Groupe implements Serializable {
     private int id;
     private String name;
     
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     List<Country> countries;
-    
-    @OneToMany(mappedBy = "group", cascade = {CascadeType.REMOVE})
-    List<Commission> commissions;
 
     public Groupe() {
     }
@@ -60,14 +58,6 @@ public class Groupe implements Serializable {
 
     public void setCountries(List<Country> countries) {
         this.countries = countries;
-    }
-
-    public List<Commission> getCommissions() {
-        return commissions;
-    }
-
-    public void setCommissions(List<Commission> commissions) {
-        this.commissions = commissions;
     }
 
     @Override

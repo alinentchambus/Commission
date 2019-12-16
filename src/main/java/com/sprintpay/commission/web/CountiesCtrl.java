@@ -5,6 +5,7 @@
  */
 package com.sprintpay.commission.web;
 
+import com.sprintpay.commission.dto.CountryDTO;
 import com.sprintpay.commission.entities.Country;
 import com.sprintpay.commission.service.ICommissionService;
 import java.net.URI;
@@ -30,11 +31,15 @@ public class CountiesCtrl {
 
     @GetMapping("/Countries/{groupId}")
     public List<Country> getCountryByGroupId(@PathVariable int groupId) {
-        return commissionService.findCountryByGroupId(groupId);
+        List<Country> countries = commissionService.findCountryByGroupId(groupId);
+        System.out.println("Nous sommes dans le controlleur");
+        System.out.println("liste des pays");
+        System.out.println(countries);
+        return countries;
     }
     
     @PostMapping("/Countries")
-    public ResponseEntity<Void> saveCountry(@RequestBody Country country){
+    public ResponseEntity<Void> saveCountry(@RequestBody CountryDTO country){
     
         Country countryAdded = commissionService.saveOrUpdateCountry(country);
         

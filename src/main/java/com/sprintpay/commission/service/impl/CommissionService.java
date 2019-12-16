@@ -5,10 +5,17 @@
  */
 package com.sprintpay.commission.service.impl;
 
+import com.sprintpay.commission.dao.CommissionDAO;
+import com.sprintpay.commission.dao.CommissionNatureDAO;
 import com.sprintpay.commission.dao.CountryDAO;
 import com.sprintpay.commission.dao.GroupDAO;
 import com.sprintpay.commission.dao.ServiceDAO;
 import com.sprintpay.commission.dao.TransactionDAO;
+import com.sprintpay.commission.dto.CommissionDTO;
+import com.sprintpay.commission.dto.CountryDTO;
+import com.sprintpay.commission.dto.TransactionDTO;
+import com.sprintpay.commission.entities.Commission;
+import com.sprintpay.commission.entities.CommissionNature;
 import com.sprintpay.commission.entities.Country;
 import com.sprintpay.commission.entities.Groupe;
 import com.sprintpay.commission.entities.Transaction;
@@ -34,6 +41,10 @@ public class CommissionService implements ICommissionService {
     private ServiceDAO serviceDAO;
     @Autowired
     private TransactionDAO transactionDAO;
+    @Autowired
+    private CommissionNatureDAO commissionNatureDAO;
+    @Autowired
+    private CommissionDAO commissionDAO;
 
     @Override
     public Groupe saveOrUpdateGroup(Groupe groupe) {
@@ -47,27 +58,34 @@ public class CommissionService implements ICommissionService {
 
     @Override
     public void deleteGroup(int groupId) {
-        groupDAO.findById(groupId);
+        groupDAO.deleteById(groupId);
     }
-    
+
     @Override
-    public Country saveOrUpdateCountry(Country country) {
+    public Country saveOrUpdateCountry(CountryDTO countryDTO) {
+
+        Groupe groupe = groupDAO.findById(countryDTO.groupId).get();
+        Country country = new Country(countryDTO.code, countryDTO.name);
+        if (groupe != null) {
+            country.setGroup(groupe);
+        }
         return countryDAO.save(country);
     }
 
     @Override
     public List<Country> findCountryByGroupId(int groupId) {
-        return countryDAO.findByGroupeId(groupId);
+        List<Country> countries = countryDAO.findByGroupeId(groupId);
+        return countries;
     }
 
     @Override
     public void deleteCountry(int countryId) {
-        countryDAO.findById(countryId);
+        countryDAO.deleteById(countryId);
     }
-    
+
     @Override
     public List<com.sprintpay.commission.entities.Service> findAllService() {
-        return  serviceDAO.findAll();
+        return serviceDAO.findAll();
     }
 
     @Override
@@ -80,20 +98,81 @@ public class CommissionService implements ICommissionService {
         serviceDAO.deleteById(serviceId);
     }
 
-    
     @Override
     public List<Transaction> findByServiceId(int serviceId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return transactionDAO.findByServiceId(serviceId);
     }
 
     @Override
-    public Transaction saveOrUpdateTransaction(Transaction transaction) {
+    public Transaction saveOrUpdateTransaction(TransactionDTO transactionDTO) {
+        com.sprintpay.commission.entities.Service service = serviceDAO.findById(transactionDTO.serviceId).get();
+        Transaction transaction = new Transaction(transactionDTO.name, transactionDTO.description);
+        if (service != null) {
+            transaction.setService(service);
+        }
         return transactionDAO.save(transaction);
     }
 
     @Override
-    public void deleteTransaction(int transaction) {
-        transactionDAO.deleteById(transaction);
+    public void deleteTransaction(int transactionId) {
+        transactionDAO.deleteById(transactionId);
+    }
+
+    @Override
+    public List<CommissionNature> getAllCommissionNature() {
+        return commissionNatureDAO.findAll();
+    }
+
+    @Override
+    public Commission saveOrUpdateCommission(CommissionDTO commissionDTO) {
+        Groupe srcGroup = groupDAO.findById(commissionDTO.sourceGroupId).get();
+        Groupe destGroup = groupDAO.findById(commissionDTO.destGroupId).get();
+        Transaction transaction = transactionDAO.findById(commissionDTO.transactionId).get();
+        CommissionNature commissionNature = commissionNatureDAO.findById(commissionDTO.commissionNatureId).get();
+
+        Commission commission = new Commission(commissionDTO.commission, commissionDTO.minAmount, commissionDTO.maxAmount);
+        if (srcGroup != null) {
+            commission.setSourceGroup(srcGroup);
+        }
+
+        if (destGroup != null) {
+            commission.setDestinationGroup(destGroup);
+        }
+
+        if (transaction != null) {
+            commission.setTransaction(transaction);
+        }
+
+        if (commissionNature != null) {
+            commission.setCommissionNature(commissionNature);
+        }
+        
+        return commissionDAO.save(commission);
+    }
+
+    @Override
+    public double findCommission(int srcCountryId, int destCountryId, int transactionId, int amount) {
+        double commissionAmount = 0.0;
+        Country srcCountry = countryDAO.findById(srcCountryId).get();
+        Country destCountry = countryDAO.findById(destCountryId).get();
+
+        if (srcCountry != null && destCountry != null && srcCountry.getGroup() != null && destCountry.getGroup() != null) {
+            Commission commission = commissionDAO.findCommission(srcCountry.getGroup().getId(), destCountry.getGroup().getId(), transactionId, amount);
+
+            if (commission != null) {
+                CommissionNature commissionNature = commissionNatureDAO.findById(commission.getCommissionNature().getId()).get();
+
+                if (commissionNature != null) {
+                    if (commissionNature.getName().equals("valeur")) {
+                        commissionAmount = commission.getCommission();
+                    } else {
+                        commissionAmount = (commission.getCommission() * amount) / 100;
+                    }
+                }
+            }
+        }
+        
+        return commissionAmount;
     }
 
 }
