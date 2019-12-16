@@ -53,9 +53,9 @@ public class Country implements Serializable {
         this.name = name;
     }
 
-//    public Groupe getGroup() {
-//        return group;
-//    }
+    public Groupe getGroup() {
+        return group;
+    }
 
     public void setGroup(Groupe group) {
         this.group = group;
