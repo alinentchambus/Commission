@@ -151,13 +151,20 @@ public class CommissionService implements ICommissionService {
     }
 
     @Override
-    public double findCommission(int srcCountryId, int destCountryId, int transactionId, int amount) {
+    public double findCommission(String srcCountryCode, String destCountryCode, String transactionCode, int amount) {
         double commissionAmount = 0.0;
-        Country srcCountry = countryDAO.findById(srcCountryId).get();
-        Country destCountry = countryDAO.findById(destCountryId).get();
+        Groupe srcGroup = groupDAO.findByCountryCode(srcCountryCode);        
+        Groupe destGroup = groupDAO.findByCountryCode(destCountryCode);
 
-        if (srcCountry != null && destCountry != null && srcCountry.getGroup() != null && destCountry.getGroup() != null) {
-            Commission commission = commissionDAO.findCommission(srcCountry.getGroup().getId(), destCountry.getGroup().getId(), transactionId, amount);
+        Country srcCountry = countryDAO.findByCode(srcCountryCode);
+        Country destCountry = countryDAO.findByCode(destCountryCode);
+        System.out.println();        
+        System.out.println(srcGroup);
+        System.out.println(destGroup);
+
+
+        if (srcGroup != null && destGroup != null ) {
+            Commission commission = commissionDAO.findCommission(srcGroup.getId(), destGroup.getId(), transactionCode, amount);
 
             if (commission != null) {
                 CommissionNature commissionNature = commissionNatureDAO.findById(commission.getCommissionNature().getId()).get();

@@ -21,4 +21,8 @@ public interface CountryDAO extends JpaRepository<Country, Integer>{
     
     @Query("select c from Country c where c.group.id = :groupId")
     List<Country> findByGroupeId(@Param("groupId") int groupId);
+    
+    Country findByCode(String code);
+    
+    
 }

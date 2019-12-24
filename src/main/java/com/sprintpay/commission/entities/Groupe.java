@@ -52,9 +52,9 @@ public class Groupe implements Serializable {
         this.name = name;
     }
 
-//    public List<Country> getCountries() {
-//        return countries;
-//    }
+    public List<Country> getCountries() {
+        return countries;
+    }
 
     public void setCountries(List<Country> countries) {
         this.countries = countries;

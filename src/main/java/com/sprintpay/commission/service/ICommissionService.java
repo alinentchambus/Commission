@@ -46,5 +46,5 @@ public interface ICommissionService {
     //CommissionNature
     List<CommissionNature> getAllCommissionNature();
     Commission saveOrUpdateCommission(CommissionDTO commissionDTO);
-    double findCommission(int srcCountryId, int destCountryId, int transactionId, int amount);
+    double findCommission(String srcCountryCode, String destCountryCode, String transactionCode, int amount);
 }

@@ -24,7 +24,8 @@ public class Transaction implements Serializable {
     @Id
     @GeneratedValue
     private int id;
-    private String name;
+    private String name;    
+    private String code;
     private String description;
     
     @ManyToOne
@@ -88,9 +89,16 @@ public class Transaction implements Serializable {
         this.commissions = commissions;
     }
 
-    @Override
-    public String toString() {
-        return "Transaction{" + "id=" + id + ", name=" + name + ", description=" + description + '}';
+    public String getCode() {
+        return code;
     }
 
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" + "id=" + id + ", name=" + name + ", code=" + code + ", description=" + description + ", service=" + service + ", commissions=" + commissions + '}';
+    }
 }

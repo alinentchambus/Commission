@@ -9,36 +9,34 @@ import com.sprintpay.commission.dto.CommissionDTO;
 import com.sprintpay.commission.dto.DoubleResult;
 import com.sprintpay.commission.entities.Commission;
 import com.sprintpay.commission.service.ICommissionService;
+import com.sprintpay.commission.web.parameters.CommissionParams;
 import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  *
  * @author ALINE-PSE
  */
-@Controller
+@RestController
 public class CommissionCtrl {
 
     @Autowired
     ICommissionService commissionService;
-
-    @GetMapping("/Commissions/{srcCountryId}/{destCountryId}/{transactionId}/{amount}")
-    public DoubleResult findCommission(@PathVariable int srcCountryId, @PathVariable int destCountryId, @PathVariable int transactionId, @PathVariable int amount) {
- 
-        double result = commissionService.findCommission(srcCountryId, destCountryId, transactionId, amount);
-        System.out.println("A partir du controlleur");
-        System.out.println(result);
-        System.out.println();   
-
+    @GetMapping("/Commissions/find")
+    public DoubleResult findCommission(CommissionParams params) {
+       
+        double result = commissionService.findCommission(params.getSrcCountryCode(), params.getDestCountryCode(),
+                params.getTransactionCode(), params.getAmount());
+        
         return new DoubleResult(result);
     }
+    
 
     @PostMapping("/Commissions")
     public ResponseEntity<Void> saveService(@RequestBody CommissionDTO commissionDTO) {
