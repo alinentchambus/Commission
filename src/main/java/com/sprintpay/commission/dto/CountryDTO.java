@@ -10,6 +10,7 @@ package com.sprintpay.commission.dto;
  * @author ALINE-PSE
  */
 public class CountryDTO {
+    public int id;
     public  String code;
     public  String name;
     public int groupId;

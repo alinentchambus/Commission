@@ -11,7 +11,10 @@ import com.sprintpay.commission.service.ICommissionService;
 import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -24,13 +27,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class TransactionCtrl {
     @Autowired
     ICommissionService commissionService;
-    
-//    @GetMapping("/Transactions")
-//    public List<Service> find() {
-//        return commissionService.;
-//    }
-//    
-    @PostMapping("/Transactions")
+   
+    @PostMapping("/api/createTransaction")
     public ResponseEntity<Void> saveService(@RequestBody TransactionDTO transaction){
     
         Transaction transactionAdded = commissionService.saveOrUpdateTransaction(transaction);
@@ -45,5 +43,27 @@ public class TransactionCtrl {
                 .buildAndExpand(transactionAdded.getId())
                 .toUri();
         return ResponseEntity.created(location).build();
+    }
+    
+    @PutMapping("/api/updateTransaction")
+    public ResponseEntity<Void> updateService(@RequestBody TransactionDTO transaction){
+    
+        Transaction transactionAdded = commissionService.saveOrUpdateTransaction(transaction);
+        
+        if(transactionAdded == null){
+            return ResponseEntity.noContent().build();
+        }
+        
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(transactionAdded.getId())
+                .toUri();
+        return ResponseEntity.created(location).build();
+    }
+    
+    @DeleteMapping("/api/deleteTransaction/{transactionId}")
+    public void deleteTransaction(@PathVariable int transactionId){
+        commissionService.deleteTransaction(transactionId);
     }
 }

@@ -32,7 +32,8 @@ public class Country implements Serializable {
     public Country() {
     }
 
-    public Country(String code, String name) {
+    public Country(int id, String code, String name) {
+        this.id = id;
         this.name = name;
         this.code = code;
     }
@@ -53,6 +54,14 @@ public class Country implements Serializable {
         this.name = name;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
 //    public Groupe getGroup() {
 //        return group;
 //    }
@@ -63,8 +72,8 @@ public class Country implements Serializable {
 
     @Override
     public String toString() {
-        return "Country{" + "id=" + id + ", name=" + name + '}';
+        return "Country{" + "id=" + id + ", code=" + code + ", name=" + name + ", group=" + group + '}';
     }
-    
+
     
 }

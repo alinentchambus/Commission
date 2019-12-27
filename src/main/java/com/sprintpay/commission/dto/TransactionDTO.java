@@ -10,6 +10,7 @@ package com.sprintpay.commission.dto;
  * @author ALINE-PSE
  */
 public class TransactionDTO {
+    public int id;
     public String name;
     public String description;
     public int serviceId;

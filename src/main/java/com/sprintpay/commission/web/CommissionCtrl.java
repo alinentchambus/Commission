@@ -28,7 +28,7 @@ public class CommissionCtrl {
 
     @Autowired
     ICommissionService commissionService;
-    @GetMapping("/Commissions/find")
+    @GetMapping("/api/findCommission")
     public DoubleResult findCommission(CommissionParams params) {
        
         double result = commissionService.findCommission(params.getSrcCountryCode(), params.getDestCountryCode(),
@@ -38,7 +38,7 @@ public class CommissionCtrl {
     }
     
 
-    @PostMapping("/Commissions")
+    @PostMapping("/api/configCommission")
     public ResponseEntity<Void> saveService(@RequestBody CommissionDTO commissionDTO) {
 
         Commission commissionAdded = commissionService.saveOrUpdateCommission(commissionDTO);

@@ -24,6 +24,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  *
@@ -65,7 +66,7 @@ public class CommissionService implements ICommissionService {
     public Country saveOrUpdateCountry(CountryDTO countryDTO) {
 
         Groupe groupe = groupDAO.findById(countryDTO.groupId).get();
-        Country country = new Country(countryDTO.code, countryDTO.name);
+        Country country = new Country(countryDTO.id, countryDTO.code, countryDTO.name);
         if (groupe != null) {
             country.setGroup(groupe);
         }
@@ -106,7 +107,7 @@ public class CommissionService implements ICommissionService {
     @Override
     public Transaction saveOrUpdateTransaction(TransactionDTO transactionDTO) {
         com.sprintpay.commission.entities.Service service = serviceDAO.findById(transactionDTO.serviceId).get();
-        Transaction transaction = new Transaction(transactionDTO.name, transactionDTO.description);
+        Transaction transaction = new Transaction(transactionDTO.id, transactionDTO.name, transactionDTO.description);
         if (service != null) {
             transaction.setService(service);
         }
@@ -114,7 +115,7 @@ public class CommissionService implements ICommissionService {
     }
 
     @Override
-    public void deleteTransaction(int transactionId) {
+    public void deleteTransaction(@PathVariable int transactionId) {
         transactionDAO.deleteById(transactionId);
     }
 
@@ -146,24 +147,31 @@ public class CommissionService implements ICommissionService {
         if (commissionNature != null) {
             commission.setCommissionNature(commissionNature);
         }
-        
+
         return commissionDAO.save(commission);
     }
 
     @Override
     public double findCommission(String srcCountryCode, String destCountryCode, String transactionCode, int amount) {
         double commissionAmount = 0.0;
-        Groupe srcGroup = groupDAO.findByCountryCode(srcCountryCode);        
+        Groupe srcGroup = groupDAO.findByCountryCode(srcCountryCode);
         Groupe destGroup = groupDAO.findByCountryCode(destCountryCode);
 
         Country srcCountry = countryDAO.findByCode(srcCountryCode);
         Country destCountry = countryDAO.findByCode(destCountryCode);
-        System.out.println();        
+        System.out.println("countrys");
+        System.out.println(srcCountryCode);
+
         System.out.println(srcGroup);
-        System.out.println(destGroup);
+
+        if (srcGroup != null && destGroup != null) {
+            System.out.println("commission params");
+            System.out.println(srcGroup.getId());           
+            System.out.println(destGroup.getId());
+            System.out.println(transactionCode);           
+            System.out.println(transactionCode);
 
 
-        if (srcGroup != null && destGroup != null ) {
             Commission commission = commissionDAO.findCommission(srcGroup.getId(), destGroup.getId(), transactionCode, amount);
 
             if (commission != null) {
@@ -178,7 +186,7 @@ public class CommissionService implements ICommissionService {
                 }
             }
         }
-        
+
         return commissionAmount;
     }
 
