@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -28,38 +29,31 @@ public class TransactionCtrl {
     @Autowired
     ICommissionService commissionService;
    
-    @PostMapping("/api/createTransaction")
-    public ResponseEntity<Void> saveService(@RequestBody TransactionDTO transaction){
+//    @PostMapping("/api/createTransaction")
+//    public ResponseEntity<Void> saveService(@RequestBody TransactionDTO transaction){
+//    
+//        Transaction transactionAdded = commissionService.saveOrUpdateTransaction(transaction);
+//        
+//        if(transactionAdded == null){
+//            return ResponseEntity.noContent().build();
+//        }
+//        
+//        URI location = ServletUriComponentsBuilder
+//                .fromCurrentRequest()
+//                .path("/{id}")
+//                .buildAndExpand(transactionAdded.getId())
+//                .toUri();
+//        return ResponseEntity.created(location).build();
+//    }
     
-        Transaction transactionAdded = commissionService.saveOrUpdateTransaction(transaction);
-        
-        if(transactionAdded == null){
-            return ResponseEntity.noContent().build();
-        }
-        
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(transactionAdded.getId())
-                .toUri();
-        return ResponseEntity.created(location).build();
+    @PostMapping("/api/createTransaction")
+    public @ResponseBody Transaction saveService(@RequestBody TransactionDTO transaction){
+        return commissionService.saveOrUpdateTransaction(transaction);
     }
     
     @PutMapping("/api/updateTransaction")
-    public ResponseEntity<Void> updateService(@RequestBody TransactionDTO transaction){
-    
-        Transaction transactionAdded = commissionService.saveOrUpdateTransaction(transaction);
-        
-        if(transactionAdded == null){
-            return ResponseEntity.noContent().build();
-        }
-        
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(transactionAdded.getId())
-                .toUri();
-        return ResponseEntity.created(location).build();
+    public @ResponseBody Transaction updateService(@RequestBody TransactionDTO transaction){
+        return commissionService.saveOrUpdateTransaction(transaction);
     }
     
     @DeleteMapping("/api/deleteTransaction/{transactionId}")

@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -38,20 +39,25 @@ public class CommissionCtrl {
     }
     
 
+//    @PostMapping("/api/configCommission")
+//    public ResponseEntity<Void> saveService(@RequestBody CommissionDTO commissionDTO) {
+//
+//        Commission commissionAdded = commissionService.saveOrUpdateCommission(commissionDTO);
+//
+//        if (commissionAdded == null) {
+//            return ResponseEntity.noContent().build();
+//        }
+//
+//        URI location = ServletUriComponentsBuilder
+//                .fromCurrentRequest()
+//                .path("/{id}")
+//                .buildAndExpand(commissionAdded.getId())
+//                .toUri();
+//        return ResponseEntity.created(location).build();
+//    }
+    
     @PostMapping("/api/configCommission")
-    public ResponseEntity<Void> saveService(@RequestBody CommissionDTO commissionDTO) {
-
-        Commission commissionAdded = commissionService.saveOrUpdateCommission(commissionDTO);
-
-        if (commissionAdded == null) {
-            return ResponseEntity.noContent().build();
-        }
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(commissionAdded.getId())
-                .toUri();
-        return ResponseEntity.created(location).build();
+    public @ResponseBody Commission saveService(@RequestBody CommissionDTO commissionDTO) {
+        return commissionService.saveOrUpdateCommission(commissionDTO);
     }
 }

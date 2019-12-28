@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -37,37 +38,47 @@ public class CountiesCtrl {
     }
     
     
+//    @PostMapping("/api/saveCountry")
+//    public ResponseEntity<Void> saveCountry(@RequestBody CountryDTO country){
+//    
+//        Country countryAdded = commissionService.saveOrUpdateCountry(country);
+//        if(countryAdded == null){
+//            return ResponseEntity.noContent().build();
+//        }
+//        
+//        URI location = ServletUriComponentsBuilder
+//                .fromCurrentRequest()
+//                .path("/{id}")
+//                .buildAndExpand(countryAdded.getId())
+//                .toUri();
+//        return ResponseEntity.created(location).build();
+//    }
+    
     @PostMapping("/api/saveCountry")
-    public ResponseEntity<Void> saveCountry(@RequestBody CountryDTO country){
-    
-        Country countryAdded = commissionService.saveOrUpdateCountry(country);
-        if(countryAdded == null){
-            return ResponseEntity.noContent().build();
-        }
-        
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(countryAdded.getId())
-                .toUri();
-        return ResponseEntity.created(location).build();
+    public @ResponseBody Country saveCountry(@RequestBody CountryDTO country){
+        return commissionService.saveOrUpdateCountry(country);
     }
     
-    @PutMapping("/api/updateCountry")
-    public ResponseEntity<Void> updateCountry(@RequestBody CountryDTO country){
-    
-        Country countryAdded = commissionService.saveOrUpdateCountry(country);
-        if(countryAdded == null){
-            return ResponseEntity.noContent().build();
-        }
-        
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(countryAdded.getId())
-                .toUri();
-        return ResponseEntity.created(location).build();
+    @PostMapping("/api/updateCountry")
+    public @ResponseBody Country updateCountry(@RequestBody CountryDTO country){
+        return commissionService.saveOrUpdateCountry(country);
     }
+    
+//    @PutMapping("/api/updateCountry")
+//    public ResponseEntity<Void> updateCountry(@RequestBody CountryDTO country){
+//    
+//        Country countryAdded = commissionService.saveOrUpdateCountry(country);
+//        if(countryAdded == null){
+//            return ResponseEntity.noContent().build();
+//        }
+//        
+//        URI location = ServletUriComponentsBuilder
+//                .fromCurrentRequest()
+//                .path("/{id}")
+//                .buildAndExpand(countryAdded.getId())
+//                .toUri();
+//        return ResponseEntity.created(location).build();
+//    }
     
     @DeleteMapping("/api/deleteCountry/{countryId}")
     public void deleteCountry(@PathVariable int countryId){

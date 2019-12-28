@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -34,38 +35,31 @@ public class ServiceCtrl {
         return commissionService.findAllService();
     }
     
-    @PostMapping("/api/createService")
-    public ResponseEntity<Void> saveService(@RequestBody Service service){
+//    @PostMapping("/api/createService")
+//    public ResponseEntity<Void> saveService(@RequestBody Service service){
+//    
+//        Service serviceAdded = commissionService.saveOrUpdateService(service);
+//        
+//        if(serviceAdded == null){
+//            return ResponseEntity.noContent().build();
+//        }
+//        
+//        URI location = ServletUriComponentsBuilder
+//                .fromCurrentRequest()
+//                .path("/{id}")
+//                .buildAndExpand(serviceAdded.getId())
+//                .toUri();
+//        return ResponseEntity.created(location).build();
+//    }
     
-        Service serviceAdded = commissionService.saveOrUpdateService(service);
-        
-        if(serviceAdded == null){
-            return ResponseEntity.noContent().build();
-        }
-        
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(serviceAdded.getId())
-                .toUri();
-        return ResponseEntity.created(location).build();
+    @PostMapping("/api/createService")
+    public @ResponseBody Service saveService(@RequestBody Service service){
+        return commissionService.saveOrUpdateService(service);
     }
     
     @PutMapping("/api/updateService")
-    public ResponseEntity<Void> updateService(@RequestBody Service service){
-    
-        Service serviceAdded = commissionService.saveOrUpdateService(service);
-        
-        if(serviceAdded == null){
-            return ResponseEntity.noContent().build();
-        }
-        
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(serviceAdded.getId())
-                .toUri();
-        return ResponseEntity.created(location).build();
+    public @ResponseBody Service updateService(@RequestBody Service service){
+        return commissionService.saveOrUpdateService(service);
     }
 
     @DeleteMapping("/api/deleteService/{serviceId}")
