@@ -12,6 +12,7 @@ package com.sprintpay.commission.dto;
 public class TransactionDTO {
     public int id;
     public String name;
+    public String code;
     public String description;
     public int serviceId;
 }

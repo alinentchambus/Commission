@@ -38,13 +38,15 @@ public class Transaction implements Serializable {
     public Transaction() {
     }
 
-    public Transaction(int id, String name, String description) {
+    public Transaction(int id,String code, String name, String description) {
         this.id = id;
+        this.code = code;
         this.name = name;
         this.description = description;
     }
     
-    public Transaction(String name, String description) {
+    public Transaction(String code, String name, String description) {
+        this.code = code;
         this.name = name;
         this.description = description;
     }

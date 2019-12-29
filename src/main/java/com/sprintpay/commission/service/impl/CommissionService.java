@@ -20,6 +20,7 @@ import com.sprintpay.commission.entities.Country;
 import com.sprintpay.commission.entities.Groupe;
 import com.sprintpay.commission.entities.Transaction;
 import com.sprintpay.commission.service.ICommissionService;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -100,14 +101,14 @@ public class CommissionService implements ICommissionService {
     }
 
     @Override
-    public List<Transaction> findByServiceId(int serviceId) {
+    public List<Transaction> findTransactionByServiceId(int serviceId) {
         return transactionDAO.findByServiceId(serviceId);
     }
 
     @Override
     public Transaction saveOrUpdateTransaction(TransactionDTO transactionDTO) {
         com.sprintpay.commission.entities.Service service = serviceDAO.findById(transactionDTO.serviceId).get();
-        Transaction transaction = new Transaction(transactionDTO.id, transactionDTO.name, transactionDTO.description);
+        Transaction transaction = new Transaction(transactionDTO.id, transactionDTO.code, transactionDTO.name, transactionDTO.description);
         if (service != null) {
             transaction.setService(service);
         }
@@ -152,26 +153,12 @@ public class CommissionService implements ICommissionService {
     }
 
     @Override
-    public double findCommission(String srcCountryCode, String destCountryCode, String transactionCode, int amount) {
+    public double findCommission(String srcCountryCode, String destCountryCode, String transactionCode, double amount) {
         double commissionAmount = 0.0;
         Groupe srcGroup = groupDAO.findByCountryCode(srcCountryCode);
         Groupe destGroup = groupDAO.findByCountryCode(destCountryCode);
 
-        Country srcCountry = countryDAO.findByCode(srcCountryCode);
-        Country destCountry = countryDAO.findByCode(destCountryCode);
-        System.out.println("countrys");
-        System.out.println(srcCountryCode);
-
-        System.out.println(srcGroup);
-
         if (srcGroup != null && destGroup != null) {
-            System.out.println("commission params");
-            System.out.println(srcGroup.getId());           
-            System.out.println(destGroup.getId());
-            System.out.println(transactionCode);           
-            System.out.println(transactionCode);
-
-
             Commission commission = commissionDAO.findCommission(srcGroup.getId(), destGroup.getId(), transactionCode, amount);
 
             if (commission != null) {
@@ -186,7 +173,6 @@ public class CommissionService implements ICommissionService {
                 }
             }
         }
-
         return commissionAmount;
     }
 

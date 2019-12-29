@@ -38,7 +38,7 @@ public interface ICommissionService {
     void deleteService(int serviceId);
     
     //Transactions
-    List<Transaction> findByServiceId(int serviceId);
+    List<Transaction> findTransactionByServiceId(int serviceId);
     Transaction saveOrUpdateTransaction(TransactionDTO transactionDTO);
     void deleteTransaction(int transaction);
     
@@ -46,5 +46,5 @@ public interface ICommissionService {
     //CommissionNature
     List<CommissionNature> getAllCommissionNature();
     Commission saveOrUpdateCommission(CommissionDTO commissionDTO);
-    double findCommission(String srcCountryCode, String destCountryCode, String transactionCode, int amount);
+    double findCommission(String srcCountryCode, String destCountryCode, String transactionCode, double amount);
 }

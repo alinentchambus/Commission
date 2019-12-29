@@ -16,6 +16,6 @@ import org.springframework.data.repository.query.Param;
  * @author ALINE-PSE
  */
 public interface TransactionDAO extends JpaRepository<Transaction, Integer>{
-    @Query("select t from Transaction t where t.service.id = : serviceId")
-    List<Transaction> findByServiceId(@Param("serviceId")int serviceId);
+    @Query("select t from Transaction t where t.service.id = :serviceId_")
+    List<Transaction> findByServiceId(@Param("serviceId_")int serviceId_);
 }

@@ -9,9 +9,11 @@ import com.sprintpay.commission.dto.TransactionDTO;
 import com.sprintpay.commission.entities.Transaction;
 import com.sprintpay.commission.service.ICommissionService;
 import java.net.URI;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -47,13 +49,18 @@ public class TransactionCtrl {
 //    }
     
     @PostMapping("/api/createTransaction")
-    public @ResponseBody Transaction saveService(@RequestBody TransactionDTO transaction){
+    public @ResponseBody Transaction saveTransaction(@RequestBody TransactionDTO transaction){
         return commissionService.saveOrUpdateTransaction(transaction);
     }
     
     @PutMapping("/api/updateTransaction")
-    public @ResponseBody Transaction updateService(@RequestBody TransactionDTO transaction){
+    public @ResponseBody Transaction updateTransaction(@RequestBody TransactionDTO transaction){
         return commissionService.saveOrUpdateTransaction(transaction);
+    }
+    
+    @GetMapping("/api/findTransaction/{serviceId}")
+    public @ResponseBody List<Transaction> findTransactionByService(@PathVariable int serviceId){
+        return commissionService.findTransactionByServiceId(serviceId);
     }
     
     @DeleteMapping("/api/deleteTransaction/{transactionId}")
