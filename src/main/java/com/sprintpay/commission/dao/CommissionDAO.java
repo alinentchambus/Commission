@@ -6,6 +6,7 @@
 package com.sprintpay.commission.dao;
 
 import com.sprintpay.commission.entities.Commission;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +19,9 @@ public interface CommissionDAO extends JpaRepository<Commission,Integer>{
     @Query("select c from Commission c where c.sourceGroup.id = :sourceGroupId and c.destinationGroup.id = :destinationGroupId "
             + "and c.transaction.code = :transactionCode and c.minAmount < :amount and c.maxAmount > :amount")
     Commission findCommission(@Param("sourceGroupId")int sourceGroupId, @Param("destinationGroupId")int destinationGroupId, @Param("transactionCode")String transactionCode,@Param("amount")double amount);
+
+    
+    @Query("select c from Commission c where c.sourceGroup.id = :sourceGroupId and c.destinationGroup.id = :destinationGroupId "
+            + "and c.transaction.id = :transactionId")
+    List<Commission> findBySrcGrpIdAndDestGrpIdAndTransactionId(@Param("sourceGroupId")int sourceGroupId, @Param("destinationGroupId")int destinationGroupId, @Param("transactionId")int transactionId);
 }

@@ -17,4 +17,8 @@ import org.springframework.data.repository.query.Param;
 public interface GroupDAO extends JpaRepository<Groupe, Integer>{
     @Query("select g from Groupe g, Country c where c.group.id = g.id and c.code = :countryCode")
     Groupe findByCountryCode(@Param("countryCode")String countryCode);
+    
+    Groupe findByName(String name);
+    
+    Groupe findByNameAndIdNot(String name, int id);
 }

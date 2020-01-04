@@ -25,9 +25,6 @@ public class CommissionNature implements Serializable{
     private String name;
     private String description;
     
-    @OneToMany(mappedBy = "commissionNature", cascade = {CascadeType.REMOVE})
-    private List<Commission> commissions;
-
     public CommissionNature() {
     }
 
@@ -59,14 +56,6 @@ public class CommissionNature implements Serializable{
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public List<Commission> getCommissions() {
-        return commissions;
-    }
-
-    public void setCommissions(List<Commission> commissions) {
-        this.commissions = commissions;
     }
 
     @Override

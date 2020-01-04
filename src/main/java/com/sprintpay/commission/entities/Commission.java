@@ -100,17 +100,17 @@ public class Commission implements Serializable {
         this.maxAmount = maxAmount;
     }
 
-    public Groupe getSourceGroup() {
-        return sourceGroup;
-    }
+//    public Groupe getSourceGroup() {
+//        return sourceGroup;
+//    }
 
     public void setSourceGroup(Groupe sourceGroup) {
         this.sourceGroup = sourceGroup;
     }
 
-    public Groupe getDestinationGroup() {
-        return destinationGroup;
-    }
+//    public Groupe getDestinationGroup() {
+//        return destinationGroup;
+//    }
 
     public void setDestinationGroup(Groupe destinationGroup) {
         this.destinationGroup = destinationGroup;

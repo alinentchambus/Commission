@@ -32,9 +32,6 @@ public class Transaction implements Serializable {
     @JoinColumn(name = "service_id")
     private Service service;
     
-    @OneToMany(mappedBy = "transaction", cascade = {CascadeType.REMOVE})
-    private List<Commission> commissions;
-
     public Transaction() {
     }
 
@@ -83,14 +80,6 @@ public class Transaction implements Serializable {
         this.service = service;
     }
 
-    public List<Commission> getCommissions() {
-        return commissions;
-    }
-
-    public void setCommissions(List<Commission> commissions) {
-        this.commissions = commissions;
-    }
-
     public String getCode() {
         return code;
     }
@@ -101,6 +90,6 @@ public class Transaction implements Serializable {
 
     @Override
     public String toString() {
-        return "Transaction{" + "id=" + id + ", name=" + name + ", code=" + code + ", description=" + description + ", service=" + service + ", commissions=" + commissions + '}';
+        return "Transaction{" + "id=" + id + ", name=" + name + ", code=" + code + ", description=" + description + ", service=" + service + '}';
     }
 }

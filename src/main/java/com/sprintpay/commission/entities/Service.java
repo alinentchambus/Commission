@@ -24,17 +24,14 @@ public class Service implements Serializable {
     private String name;
     private String description;
     
-    @OneToMany(mappedBy = "service")
-    private List<Transaction> transactions;
 
     public Service() {
     }
 
-    public Service(int id, String name, String description, List<Transaction> transactions) {
+    public Service(int id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.transactions = transactions;
     }
 
     public int getId() {
@@ -61,16 +58,9 @@ public class Service implements Serializable {
         this.description = description;
     }
 
-//    public List<Transaction> getTransactions() {
-//        return transactions;
-//    }
-
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
-    }
 
     @Override
     public String toString() {
-        return "Service{" + "id=" + id + ", name=" + name + ", description=" + description + ", transactions=" + transactions + '}';
+        return "Service{" + "id=" + id + ", name=" + name + ", description=" + description + '}';
     }
 }

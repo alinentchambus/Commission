@@ -24,5 +24,10 @@ public interface CountryDAO extends JpaRepository<Country, Integer>{
     
     Country findByCode( String code);
     
+    Country findByName(String name);
+    
+    Country findByCodeAndIdNot(String code,  int id);
+    
+    Country findByNameAndIdNot(String name, int id);
     
 }

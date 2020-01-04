@@ -58,8 +58,7 @@ public class CountiesCtrl {
     public @ResponseBody Country saveCountry(@RequestBody CountryDTO country){
         return commissionService.saveOrUpdateCountry(country);
     }
-    
-    @PostMapping("/api/updateCountry")
+    @PutMapping("/api/updateCountry")
     public @ResponseBody Country updateCountry(@RequestBody CountryDTO country){
         return commissionService.saveOrUpdateCountry(country);
     }

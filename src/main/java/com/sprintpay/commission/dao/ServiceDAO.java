@@ -13,5 +13,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author ALINE-PSE
  */
 public interface ServiceDAO extends JpaRepository<Service, Integer >{
-    
+    Service findByName(String name);
+    Service findByNameAndIdNot(String name, int id);
 }
