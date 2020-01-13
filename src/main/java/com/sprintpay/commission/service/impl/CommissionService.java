@@ -51,55 +51,64 @@ public class CommissionService implements ICommissionService {
     @Override
     public Groupe saveOrUpdateGroup(Groupe groupe) {
         if (groupe.getId() > 0) {
-            Groupe groupe1 = groupDAO.findByNameAndIdNot(groupe.getName(), groupe.getId());
+            Groupe groupe1 = groupDAO.findByNameAndIdNotAndIsActiveTrue(groupe.getName(), groupe.getId());
             if (groupe1 != null) {
                 throw new CommissionException("GROUP_NAME_EXIST");
             }
         } else {
-            Groupe groupe1 = groupDAO.findByName(groupe.getName());
+            Groupe groupe1 = groupDAO.findByNameAndIsActiveTrue(groupe.getName());
             if (groupe1 != null) {
                 throw new CommissionException("GROUP_NAME_EXIST");
             }
         }
 
+        groupe.setIsActive(Boolean.TRUE);
         return groupDAO.save(groupe);
     }
 
     @Override
     public List<Groupe> findAllGroup() {
-        return groupDAO.findAll();
+        return groupDAO.findAllAndIsActiveTrue();
     }
 
     @Override
     public void deleteGroup(int groupId) {
-        groupDAO.deleteById(groupId);
+        Groupe groupe = groupDAO.findByIdAndIsActiveTrue(groupId);
+
+        if (groupe != null) {
+            groupe.setIsActive(Boolean.FALSE);
+            groupDAO.save(groupe);
+        }
+        else{
+            throw new CommissionException("GROUP_NOT_EXIST");
+        }
     }
 
     @Override
     public Country saveOrUpdateCountry(CountryDTO countryDTO) {
 
         if (countryDTO.id > 0) {
-            Country country = countryDAO.findByCodeAndIdNot(countryDTO.code, countryDTO.id);
+            Country country = countryDAO.findByCodeAndIdNotAndIsActiveTrue(countryDTO.code, countryDTO.id);
             if (country != null) {
                 throw new CommissionException("COUNTRY_CODE_EXIST");
             }
-            country = countryDAO.findByNameAndIdNot(countryDTO.name, countryDTO.id);
+            country = countryDAO.findByNameAndIdNotAndIsActiveTrue(countryDTO.name, countryDTO.id);
             if (country != null) {
                 throw new CommissionException("COUNTRY_NAME_EXIST");
             }
         } else {
-            Country country = countryDAO.findByCode(countryDTO.code);
+            Country country = countryDAO.findByCodeAndIsActiveTrue(countryDTO.code);
             if (country != null) {
                 throw new CommissionException("COUNTRY_CODE_EXIST");
             }
-            country = countryDAO.findByName(countryDTO.name);
+            country = countryDAO.findByNameAndIsActiveTrue(countryDTO.name);
             if (country != null) {
                 throw new CommissionException("COUNTRY_NAME_EXIST");
             }
         }
 
-        Groupe groupe = groupDAO.findById(countryDTO.groupId).get();
-        Country country = new Country(countryDTO.id, countryDTO.code, countryDTO.name);
+        Groupe groupe = groupDAO.findByIdAndIsActiveTrue(countryDTO.groupId);
+        Country country = new Country(countryDTO.id, countryDTO.code, countryDTO.name, true);
         if (groupe != null) {
             country.setGroup(groupe);
         }
@@ -108,72 +117,98 @@ public class CommissionService implements ICommissionService {
 
     @Override
     public List<Country> findCountryByGroupId(int groupId) {
-        List<Country> countries = countryDAO.findByGroupeId(groupId);
+        List<Country> countries = countryDAO.findByGroupeIdAndIsActiveTrue(groupId);
         return countries;
+    }
+    
+    @Override
+    public List<Country> findAllCountry(){
+        return countryDAO.findAllAndIsActiveTrue();
     }
 
     @Override
     public void deleteCountry(int countryId) {
-        countryDAO.deleteById(countryId);
+        Country country = countryDAO.findByIdAndIsActiveTrue(countryId);
+
+        if (country != null) {
+            country.setIsActive(Boolean.FALSE);
+            countryDAO.save(country);
+        }
+        else{
+            throw new CommissionException("COUNTRY_NOT_EXIST");
+        }
     }
 
     @Override
     public List<com.sprintpay.commission.entities.Service> findAllService() {
-        return serviceDAO.findAll();
+        return serviceDAO.findAllAndIsActiveTrue();
     }
 
     @Override
     public com.sprintpay.commission.entities.Service saveOrUpdateService(com.sprintpay.commission.entities.Service service) {
 
         if (service.getId() > 0) {
-            com.sprintpay.commission.entities.Service service1 = serviceDAO.findByNameAndIdNot(service.getName(), service.getId());
+            com.sprintpay.commission.entities.Service service1 = serviceDAO.findByNameAndIdNotAndIsActiveTrue(service.getName(), service.getId());
             if (service1 != null) {
                 throw new CommissionException("SERVICE_NAME_EXIST");
             }
         } else {
-            com.sprintpay.commission.entities.Service service1 = serviceDAO.findByName(service.getName());
+            com.sprintpay.commission.entities.Service service1 = serviceDAO.findByNameAndIsActiveTrue(service.getName());
             if (service1 != null) {
                 throw new CommissionException("SERVICE_NAME_EXIST");
             }
         }
+        service.setIsActive(Boolean.TRUE);
         return serviceDAO.save(service);
     }
 
     @Override
     public void deleteService(int serviceId) {
-        serviceDAO.deleteById(serviceId);
+        com.sprintpay.commission.entities.Service service = serviceDAO.findByIdAndIsActiveTrue(serviceId);
+        if (service != null) {
+            service.setIsActive(Boolean.FALSE);
+            serviceDAO.save(service);
+        }
+        else{
+            throw new CommissionException("SERVICE_NOT_EXIST");
+        }
     }
 
     @Override
     public List<Transaction> findTransactionByServiceId(int serviceId) {
         return transactionDAO.findByServiceId(serviceId);
     }
+    
+    @Override
+    public List<Transaction> findAllTransaction(){
+        return transactionDAO.findAllAndIsActiveTrue();
+    }
 
     @Override
     public Transaction saveOrUpdateTransaction(TransactionDTO transactionDTO) {
 
         if (transactionDTO.id > 0) {
-            Transaction transaction = transactionDAO.findByCodeAndIdNot(transactionDTO.code, transactionDTO.id);
+            Transaction transaction = transactionDAO.findByCodeAndIdNotAndIsActiveTrue(transactionDTO.code, transactionDTO.id);
             if (transaction != null) {
                 throw new CommissionException("TRANSACTION_CODE_EXIST");
             }
-            transaction = transactionDAO.findByNameAndIdNot(transactionDTO.name, transactionDTO.id);
+            transaction = transactionDAO.findByNameAndIdNotAndIsActiveTrue(transactionDTO.name, transactionDTO.id);
             if (transaction != null) {
                 throw new CommissionException("TRANSACTION_NAME_EXIST");
             }
         } else {
-            Transaction transaction = transactionDAO.findByCode(transactionDTO.code);
+            Transaction transaction = transactionDAO.findByCodeAndIsActiveTrue(transactionDTO.code);
             if (transaction != null) {
                 throw new CommissionException("TRANSACTION_CODE_EXIST");
             }
-            transaction = transactionDAO.findByName(transactionDTO.name);
+            transaction = transactionDAO.findByNameAndIsActiveTrue(transactionDTO.name);
             if (transaction != null) {
                 throw new CommissionException("TRANSACTION_NAME_EXIST");
             }
         }
 
-        com.sprintpay.commission.entities.Service service = serviceDAO.findById(transactionDTO.serviceId).get();
-        Transaction transaction = new Transaction(transactionDTO.id, transactionDTO.code, transactionDTO.name, transactionDTO.description);
+        com.sprintpay.commission.entities.Service service = serviceDAO.findByIdAndIsActiveTrue(transactionDTO.serviceId);
+        Transaction transaction = new Transaction(transactionDTO.id, transactionDTO.code, transactionDTO.name, transactionDTO.description, true);
         if (service != null) {
             transaction.setService(service);
         }
@@ -182,7 +217,15 @@ public class CommissionService implements ICommissionService {
 
     @Override
     public void deleteTransaction(@PathVariable int transactionId) {
-        transactionDAO.deleteById(transactionId);
+        Transaction transaction = transactionDAO.findByIdAndIsActiveTrue(transactionId);
+
+        if (transaction != null) {
+            transaction.setIsActive(Boolean.TRUE);
+            transactionDAO.save(transaction);
+        }
+        else{
+            throw new CommissionException("TRANSACTION_NOT_EXIST");
+        }
     }
 
     @Override
@@ -198,19 +241,19 @@ public class CommissionService implements ICommissionService {
             for (Commission com_test : com_tests) {
                 System.out.println();
                 System.out.println("dans la bouble");
-                if ((commissionDTO.maxAmount > com_test.getMinAmount() && commissionDTO.maxAmount < com_test.getMaxAmount()) || 
-                        (commissionDTO.minAmount > com_test.getMinAmount() && commissionDTO.minAmount < com_test.getMaxAmount()) ||
-                        (commissionDTO.maxAmount == com_test.getMinAmount() && commissionDTO.maxAmount == com_test.getMaxAmount())) {
+                if ((commissionDTO.maxAmount > com_test.getMinAmount() && commissionDTO.maxAmount < com_test.getMaxAmount())
+                        || (commissionDTO.minAmount > com_test.getMinAmount() && commissionDTO.minAmount < com_test.getMaxAmount())
+                        || (commissionDTO.maxAmount == com_test.getMinAmount() && commissionDTO.maxAmount == com_test.getMaxAmount())) {
                     throw new CommissionException("CONFLICTING_CONFIG");
                 }
             }
         }
-        Groupe srcGroup = groupDAO.findById(commissionDTO.sourceGroupId).get();
-        Groupe destGroup = groupDAO.findById(commissionDTO.destGroupId).get();
-        Transaction transaction = transactionDAO.findById(commissionDTO.transactionId).get();
+        Groupe srcGroup = groupDAO.findByIdAndIsActiveTrue(commissionDTO.sourceGroupId);
+        Groupe destGroup = groupDAO.findByIdAndIsActiveTrue(commissionDTO.destGroupId);
+        Transaction transaction = transactionDAO.findByIdAndIsActiveTrue(commissionDTO.transactionId);
         CommissionNature commissionNature = commissionNatureDAO.findById(commissionDTO.commissionNatureId).get();
 
-        Commission commission = new Commission(commissionDTO.commission, commissionDTO.minAmount, commissionDTO.maxAmount);
+        Commission commission = new Commission(commissionDTO.commission, commissionDTO.minAmount, commissionDTO.maxAmount, true);
         if (srcGroup != null) {
             commission.setSourceGroup(srcGroup);
         }
@@ -233,8 +276,8 @@ public class CommissionService implements ICommissionService {
     @Override
     public double findCommission(String srcCountryCode, String destCountryCode, String transactionCode, double amount) {
         double commissionAmount = 0.0;
-        Groupe srcGroup = groupDAO.findByCountryCode(srcCountryCode);
-        Groupe destGroup = groupDAO.findByCountryCode(destCountryCode);
+        Groupe srcGroup = groupDAO.findByCountryCodeAndIsActiveTrue(srcCountryCode);
+        Groupe destGroup = groupDAO.findByCountryCodeAndIsActiveTrue(destCountryCode);
 
         if (srcGroup != null && destGroup != null) {
             Commission commission = commissionDAO.findCommission(srcGroup.getId(), destGroup.getId(), transactionCode, amount);

@@ -6,14 +6,11 @@
 package com.sprintpay.commission.entities;
 
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 /**
  *
@@ -27,6 +24,7 @@ public class Transaction implements Serializable {
     private String name;    
     private String code;
     private String description;
+    private Boolean isActive;
     
     @ManyToOne
     @JoinColumn(name = "service_id")
@@ -35,11 +33,12 @@ public class Transaction implements Serializable {
     public Transaction() {
     }
 
-    public Transaction(int id,String code, String name, String description) {
+    public Transaction(int id,String code, String name, String description, Boolean isActive) {
         this.id = id;
         this.code = code;
         this.name = name;
         this.description = description;
+        this.isActive = isActive;
     }
     
     public Transaction(String code, String name, String description) {
@@ -88,8 +87,17 @@ public class Transaction implements Serializable {
         this.code = code;
     }
 
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
     @Override
     public String toString() {
-        return "Transaction{" + "id=" + id + ", name=" + name + ", code=" + code + ", description=" + description + ", service=" + service + '}';
+        return "Transaction{" + "id=" + id + ", name=" + name + ", code=" + code + ", description=" + description + ", isActive=" + isActive + ", service=" + service + '}';
     }
+
 }

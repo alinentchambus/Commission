@@ -5,6 +5,8 @@
  */
 package com.sprintpay.commission.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
@@ -23,16 +25,18 @@ public class Groupe implements Serializable {
     @GeneratedValue
     private int id;
     private String name;
+    private Boolean isActive;
     
-    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "group")
     List<Country> countries;
 
     public Groupe() {
     }
 
-    public Groupe(int id, String name) {
+    public Groupe(int id, String name, Boolean isActive) {
         this.id = id;
         this.name = name;
+        this.isActive = isActive;
     }
 
     public int getId() {
@@ -59,9 +63,17 @@ public class Groupe implements Serializable {
         this.countries = countries;
     }
 
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
     @Override
     public String toString() {
-        return "Group{" + "id=" + id + ", name=" + name + '}';
+        return "Groupe{" + "id=" + id + ", name=" + name + ", isActive=" + isActive + ", countries=" + countries + '}';
     }
 
 }

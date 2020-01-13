@@ -60,6 +60,11 @@ public class TransactionCtrl {
         return commissionService.findTransactionByServiceId(serviceId);
     }
     
+    @GetMapping("/api/findAllTransaction")
+    public @ResponseBody List<Transaction> findAllTransaction(){
+        return commissionService.findAllTransaction();
+    }
+    
     @DeleteMapping("/api/deleteTransaction/{transactionId}")
     public void deleteTransaction(@PathVariable int transactionId){
         commissionService.deleteTransaction(transactionId);

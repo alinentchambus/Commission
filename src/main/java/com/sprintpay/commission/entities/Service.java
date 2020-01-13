@@ -6,11 +6,9 @@
 package com.sprintpay.commission.entities;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 /**
  *
@@ -23,15 +21,17 @@ public class Service implements Serializable {
     private int id;
     private String name;
     private String description;
+    private Boolean isActive;
     
 
     public Service() {
     }
 
-    public Service(int id, String name, String description) {
+    public Service(int id, String name, String description, Boolean isActive) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.isActive = isActive;
     }
 
     public int getId() {
@@ -58,9 +58,17 @@ public class Service implements Serializable {
         this.description = description;
     }
 
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
 
     @Override
     public String toString() {
-        return "Service{" + "id=" + id + ", name=" + name + ", description=" + description + '}';
+        return "Service{" + "id=" + id + ", name=" + name + ", description=" + description + ", isActive=" + isActive + '}';
     }
+
 }

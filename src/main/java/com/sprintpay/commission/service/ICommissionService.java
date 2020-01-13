@@ -29,7 +29,8 @@ public interface ICommissionService {
     
     //Country
     Country saveOrUpdateCountry(CountryDTO country);
-    List<Country> findCountryByGroupId(int groupId);
+    List<Country> findCountryByGroupId(int groupId);    
+    List<Country> findAllCountry();
     void deleteCountry(int countryId);
     
     //Services
@@ -38,7 +39,9 @@ public interface ICommissionService {
     void deleteService(int serviceId);
     
     //Transactions
-    List<Transaction> findTransactionByServiceId(int serviceId);
+    List<Transaction> findTransactionByServiceId(int serviceId);    
+    List<Transaction> findAllTransaction();
+
     Transaction saveOrUpdateTransaction(TransactionDTO transactionDTO);
     void deleteTransaction(int transaction);
     

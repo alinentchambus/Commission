@@ -37,6 +37,10 @@ public class CountiesCtrl {
         return commissionService.findCountryByGroupId(groupId);
     }
     
+    @GetMapping("/api/getAllCountries")
+    public List<Country> findAllCountry() {
+        return commissionService.findAllCountry();
+    }
     
 //    @PostMapping("/api/saveCountry")
 //    public ResponseEntity<Void> saveCountry(@RequestBody CountryDTO country){

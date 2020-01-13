@@ -19,15 +19,19 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CountryDAO extends JpaRepository<Country, Integer>{
     
-    @Query("select c from Country c where c.group.id = :groupId")
-    List<Country> findByGroupeId(@Param("groupId") int groupId);
+    @Query("select c from Country c where c.group.id = :groupId and c.isActive = true")
+    List<Country> findByGroupeIdAndIsActiveTrue(@Param("groupId") int groupId);
     
-    Country findByCode( String code);
+    @Query("select c from Country c where c.isActive = true ")
+    List<Country> findAllAndIsActiveTrue();
     
-    Country findByName(String name);
+    Country findByCodeAndIsActiveTrue( String code);
     
-    Country findByCodeAndIdNot(String code,  int id);
+    Country findByNameAndIsActiveTrue(String name);
     
-    Country findByNameAndIdNot(String name, int id);
+    Country findByCodeAndIdNotAndIsActiveTrue(String code,  int id);
     
+    Country findByNameAndIdNotAndIsActiveTrue(String name, int id);
+    
+    Country findByIdAndIsActiveTrue(int countryId);
 }

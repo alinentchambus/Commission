@@ -17,11 +17,11 @@ import org.springframework.data.repository.query.Param;
  */
 public interface CommissionDAO extends JpaRepository<Commission,Integer>{
     @Query("select c from Commission c where c.sourceGroup.id = :sourceGroupId and c.destinationGroup.id = :destinationGroupId "
-            + "and c.transaction.code = :transactionCode and c.minAmount < :amount and c.maxAmount > :amount")
+            + "and c.transaction.code = :transactionCode and c.minAmount < :amount and c.maxAmount > :amount and c.isActive = true")
     Commission findCommission(@Param("sourceGroupId")int sourceGroupId, @Param("destinationGroupId")int destinationGroupId, @Param("transactionCode")String transactionCode,@Param("amount")double amount);
 
     
     @Query("select c from Commission c where c.sourceGroup.id = :sourceGroupId and c.destinationGroup.id = :destinationGroupId "
-            + "and c.transaction.id = :transactionId")
+            + "and c.transaction.id = :transactionId and c.isActive = true")
     List<Commission> findBySrcGrpIdAndDestGrpIdAndTransactionId(@Param("sourceGroupId")int sourceGroupId, @Param("destinationGroupId")int destinationGroupId, @Param("transactionId")int transactionId);
 }

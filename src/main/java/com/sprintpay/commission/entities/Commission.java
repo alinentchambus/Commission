@@ -25,7 +25,7 @@ public class Commission implements Serializable {
     private double commission;
     private double minAmount;
     private double maxAmount;
-    
+    private Boolean isActive;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "src_group_id")
     private Groupe sourceGroup;
@@ -46,10 +46,11 @@ public class Commission implements Serializable {
     public Commission() {
     }
 
-    public Commission(double commission, double minAmount, double maxAmount) {
+    public Commission(double commission, double minAmount, double maxAmount, Boolean isActive) {
         this.commission = commission;
         this.minAmount = minAmount;
         this.maxAmount = maxAmount;
+        this.isActive = isActive;
     }
 
     public int getId() {
@@ -116,9 +117,19 @@ public class Commission implements Serializable {
         this.destinationGroup = destinationGroup;
     }
 
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
     @Override
     public String toString() {
-        return "Commission{" + "id=" + id + ", commission=" + commission + ", minAmount=" + minAmount + ", maxAmount=" + maxAmount + ", sourceGroup=" + sourceGroup + ", destinationGroup=" + destinationGroup + ", transaction=" + transaction + ", commissionNature=" + commissionNature + '}';
+        return "Commission{" + "id=" + id + ", commission=" + commission + ", minAmount=" + minAmount + ", maxAmount=" + maxAmount + ", isActive=" + isActive + ", sourceGroup=" + sourceGroup + ", destinationGroup=" + destinationGroup + ", transaction=" + transaction + ", commissionNature=" + commissionNature + '}';
     }
+
+    
 
 }
