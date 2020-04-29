@@ -66,7 +66,8 @@ public class TransactionCtrl {
     }
     
     @DeleteMapping("/api/deleteTransaction/{transactionId}")
-    public void deleteTransaction(@PathVariable int transactionId){
+    public int deleteTransaction(@PathVariable int transactionId){
         commissionService.deleteTransaction(transactionId);
+        return transactionId;
     }
 }

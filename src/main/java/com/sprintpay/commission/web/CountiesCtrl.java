@@ -8,19 +8,18 @@ package com.sprintpay.commission.web;
 import com.sprintpay.commission.dto.CountryDTO;
 import com.sprintpay.commission.entities.Country;
 import com.sprintpay.commission.service.ICommissionService;
-import java.net.URI;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  *
@@ -60,10 +59,12 @@ public class CountiesCtrl {
     
     @PostMapping("/api/saveCountry")
     public @ResponseBody Country saveCountry(@RequestBody CountryDTO country){
+        System.out.println("création de pays");
         return commissionService.saveOrUpdateCountry(country);
     }
     @PutMapping("/api/updateCountry")
     public @ResponseBody Country updateCountry(@RequestBody CountryDTO country){
+        System.out.println("Mise à jour de pays");
         return commissionService.saveOrUpdateCountry(country);
     }
     
@@ -83,8 +84,9 @@ public class CountiesCtrl {
 //        return ResponseEntity.created(location).build();
 //    }
     
-    @DeleteMapping("/api/deleteCountry/{countryId}")
-    public void deleteCountry(@PathVariable int countryId){
+    @RequestMapping(value = "/api/deleteCountry/{countryId}", method = RequestMethod.DELETE)
+    public int deleteCountry(@PathVariable int countryId){
         commissionService.deleteCountry(countryId);
+        return countryId;
     }
 }

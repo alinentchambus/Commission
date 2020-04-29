@@ -16,14 +16,17 @@ public class CountryDTO {
     public  String code;
     public  String name;
     public int groupId;
-    public Groupe groupe;
+    //public Groupe groupe;
 
-    public CountryDTO(int id, String code, String name, int groupId, Groupe groupe) {
+    public CountryDTO() {
+    }
+
+    public CountryDTO(int id, String code, String name, int groupId) {
         this.id = id;
         this.code = code;
         this.name = name;
         this.groupId = groupId;
-        this.groupe = groupe;
+        //this.groupe = groupe;
     }
     
     

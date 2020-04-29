@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -60,7 +61,8 @@ public class ServiceCtrl {
     }
 
     @DeleteMapping("/api/deleteService/{serviceId}")
-    public void deleteService(@PathVariable int serviceId) {
+    public int deleteService(@PathVariable int serviceId) {
          commissionService.deleteService(serviceId);
+         return serviceId;
     }
 }

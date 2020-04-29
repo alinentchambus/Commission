@@ -22,6 +22,7 @@ import com.sprintpay.commission.entities.Transaction;
 import com.sprintpay.commission.exception.CommissionException;
 import com.sprintpay.commission.service.ICommissionService;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,33 +87,50 @@ public class CommissionService implements ICommissionService {
 
     @Override
     public Country saveOrUpdateCountry(CountryDTO countryDTO) {
-
+        
+        if(countryDTO.groupId == 0){
+            throw new CommissionException("GROUP_ID_REQUIED");
+        }
+        Groupe group = groupDAO.findByIdAndIsActiveTrue(countryDTO.groupId);
+        if(group == null){
+            throw new CommissionException("INVALID_GROUP_ID");
+        }
+        
         if (countryDTO.id > 0) {
-            Country country = countryDAO.findByCodeAndIdNotAndIsActiveTrue(countryDTO.code, countryDTO.id);
-            if (country != null) {
+            Optional<Country> country = countryDAO.findById(countryDTO.id);
+            if(!country.isPresent()){
+                throw new CommissionException("INVALID_COUNTRY_ID");
+            }
+            Country testCountry = countryDAO.findByCodeAndIdNotAndIsActiveTrue(countryDTO.code, countryDTO.id);
+            if (testCountry != null) {
                 throw new CommissionException("COUNTRY_CODE_EXIST");
             }
-            country = countryDAO.findByNameAndIdNotAndIsActiveTrue(countryDTO.name, countryDTO.id);
-            if (country != null) {
+            testCountry = countryDAO.findByNameAndIdNotAndIsActiveTrue(countryDTO.name, countryDTO.id);
+            if (testCountry != null) {
                 throw new CommissionException("COUNTRY_NAME_EXIST");
             }
         } else {
-            Country country = countryDAO.findByCodeAndIsActiveTrue(countryDTO.code);
-            if (country != null) {
+            Country testCountry = countryDAO.findByCodeAndIsActiveTrue(countryDTO.code);
+            if (testCountry != null) {
                 throw new CommissionException("COUNTRY_CODE_EXIST");
             }
-            country = countryDAO.findByNameAndIsActiveTrue(countryDTO.name);
-            if (country != null) {
+            testCountry = countryDAO.findByNameAndIsActiveTrue(countryDTO.name);
+            if (testCountry != null) {
                 throw new CommissionException("COUNTRY_NAME_EXIST");
             }
         }
+        
+        Country deletedCountry = countryDAO.findByNameAndCodeAndIsActiveFalse(countryDTO.name, countryDTO.code);
 
-        Groupe groupe = groupDAO.findByIdAndIsActiveTrue(countryDTO.groupId);
-        Country country = new Country(countryDTO.id, countryDTO.code, countryDTO.name, true);
-        if (groupe != null) {
-            country.setGroup(groupe);
+        if(countryDTO.id == 0 && deletedCountry != null){
+            deletedCountry.setGroup(group);
+            deletedCountry.setIsActive(Boolean.TRUE);
+            return countryDAO.save(deletedCountry);
+        }else{
+            Country country = new Country(countryDTO.id, countryDTO.code, countryDTO.name, true);
+            country.setGroup(group);
+            return countryDAO.save(country);
         }
-        return countryDAO.save(country);
     }
 
     @Override
@@ -187,13 +205,28 @@ public class CommissionService implements ICommissionService {
     @Override
     public Transaction saveOrUpdateTransaction(TransactionDTO transactionDTO) {
 
+        if(transactionDTO.code == null){
+            
+            throw new CommissionException("TRANSACTION_CODE_REQUIRED");
+        }
+        if(transactionDTO.serviceId == 0){
+            throw new CommissionException("SERVICE_ID_REQUIRED");
+        }
+        com.sprintpay.commission.entities.Service service = serviceDAO.findByIdAndIsActiveTrue(transactionDTO.serviceId);
+        if(service == null){
+            throw new CommissionException("INVALID_SERVICE_ID");
+        }
         if (transactionDTO.id > 0) {
-            Transaction transaction = transactionDAO.findByCodeAndIdNotAndIsActiveTrue(transactionDTO.code, transactionDTO.id);
-            if (transaction != null) {
+            Optional<Transaction> transaction = transactionDAO.findById(transactionDTO.id);
+            if(!transaction.isPresent()){
+                throw new CommissionException("INVALID_TRANSACTION_ID");
+            }
+            Transaction testTransaction = transactionDAO.findByCodeAndIdNotAndIsActiveTrue(transactionDTO.code, transactionDTO.id);
+            if (testTransaction != null) {
                 throw new CommissionException("TRANSACTION_CODE_EXIST");
             }
-            transaction = transactionDAO.findByNameAndIdNotAndIsActiveTrue(transactionDTO.name, transactionDTO.id);
-            if (transaction != null) {
+            testTransaction = transactionDAO.findByNameAndIdNotAndIsActiveTrue(transactionDTO.name, transactionDTO.id);
+            if (testTransaction != null) {
                 throw new CommissionException("TRANSACTION_NAME_EXIST");
             }
         } else {
@@ -206,13 +239,20 @@ public class CommissionService implements ICommissionService {
                 throw new CommissionException("TRANSACTION_NAME_EXIST");
             }
         }
+        
+        Transaction deletedTransaction = transactionDAO.findByNameAndCodeAndIsActiveFalse(transactionDTO.name, transactionDTO.code);
 
-        com.sprintpay.commission.entities.Service service = serviceDAO.findByIdAndIsActiveTrue(transactionDTO.serviceId);
-        Transaction transaction = new Transaction(transactionDTO.id, transactionDTO.code, transactionDTO.name, transactionDTO.description, true);
-        if (service != null) {
+        if(transactionDTO.id == 0 && deletedTransaction != null){
+            deletedTransaction.setService(service);
+            deletedTransaction.setIsActive(Boolean.TRUE);
+            return transactionDAO.save(deletedTransaction);
+        }else{
+                Transaction transaction = new Transaction(transactionDTO.id, transactionDTO.code, transactionDTO.name, transactionDTO.description, true);
             transaction.setService(service);
+            return transactionDAO.save(transaction);
         }
-        return transactionDAO.save(transaction);
+
+
     }
 
     @Override
@@ -220,7 +260,7 @@ public class CommissionService implements ICommissionService {
         Transaction transaction = transactionDAO.findByIdAndIsActiveTrue(transactionId);
 
         if (transaction != null) {
-            transaction.setIsActive(Boolean.TRUE);
+            transaction.setIsActive(Boolean.FALSE);
             transactionDAO.save(transaction);
         }
         else{

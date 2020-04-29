@@ -5,12 +5,10 @@
  */
 package com.sprintpay.commission.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -20,6 +18,7 @@ import javax.persistence.OneToMany;
  * @author ALINE-PSE
  */
 @Entity
+@JsonIgnoreProperties("countries")
 public class Groupe implements Serializable {
     @Id
     @GeneratedValue

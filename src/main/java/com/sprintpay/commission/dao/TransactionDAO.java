@@ -25,4 +25,5 @@ public interface TransactionDAO extends JpaRepository<Transaction, Integer>{
     Transaction findByCodeAndIsActiveTrue(String code);
     Transaction findByCodeAndIdNotAndIsActiveTrue(String code, int id);
     Transaction findByIdAndIsActiveTrue(int id);
+    Transaction findByNameAndCodeAndIsActiveFalse(String name, String code);
 }
