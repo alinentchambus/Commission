@@ -48,6 +48,8 @@ public interface ICommissionService {
     
     //CommissionNature
     List<CommissionNature> getAllCommissionNature();
-    Commission saveOrUpdateCommission(CommissionDTO commissionDTO);
+    Commission saveOrUpdateCommission(CommissionDTO commissionDTO);    
+    List<Commission> getConfigurationByServiceId(int serviceId);
+
     double findCommission(String srcCountryCode, String destCountryCode, String transactionCode, double amount);
 }

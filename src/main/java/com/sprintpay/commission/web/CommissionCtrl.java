@@ -9,6 +9,7 @@ import com.sprintpay.commission.dto.CommissionDTO;
 import com.sprintpay.commission.dto.DoubleResult;
 import com.sprintpay.commission.entities.Commission;
 import com.sprintpay.commission.service.ICommissionService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,7 +55,12 @@ public class CommissionCtrl {
 //    }
     
     @PostMapping("/api/configCommission")
-    public @ResponseBody Commission saveService(@RequestBody CommissionDTO commissionDTO) {
+    public @ResponseBody Commission saveConfiguration(@RequestBody CommissionDTO commissionDTO) {
         return commissionService.saveOrUpdateCommission(commissionDTO);
+    }
+    
+    @GetMapping("/api/getConfigs")
+    public @ResponseBody List<Commission> getConfiguration(int serviceId) {
+        return commissionService.getConfigurationByServiceId(serviceId);
     }
 }

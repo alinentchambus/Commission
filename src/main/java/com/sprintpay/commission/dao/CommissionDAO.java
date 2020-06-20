@@ -24,4 +24,8 @@ public interface CommissionDAO extends JpaRepository<Commission,Integer>{
     @Query("select c from Commission c where c.sourceGroup.id = :sourceGroupId and c.destinationGroup.id = :destinationGroupId "
             + "and c.transaction.id = :transactionId and c.isActive = true")
     List<Commission> findBySrcGrpIdAndDestGrpIdAndTransactionId(@Param("sourceGroupId")int sourceGroupId, @Param("destinationGroupId")int destinationGroupId, @Param("transactionId")int transactionId);
+
+    @Query("select c from Commission c where c.transaction.service.id = :serviceId and c.isActive = true")
+    List<Commission> findByServiceId(@Param("serviceId")int serviceId);
+
 }

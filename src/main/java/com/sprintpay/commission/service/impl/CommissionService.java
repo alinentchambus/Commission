@@ -314,6 +314,12 @@ public class CommissionService implements ICommissionService {
     }
 
     @Override
+    public List<Commission> getConfigurationByServiceId(int serviceId) {
+        return commissionDAO.findByServiceId(serviceId);
+    }
+
+    
+    @Override
     public double findCommission(String srcCountryCode, String destCountryCode, String transactionCode, double amount) {
         double commissionAmount = 0.0;
         Groupe srcGroup = groupDAO.findByCountryCodeAndIsActiveTrue(srcCountryCode);
